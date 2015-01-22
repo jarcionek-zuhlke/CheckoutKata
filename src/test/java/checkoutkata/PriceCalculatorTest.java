@@ -5,6 +5,7 @@ import org.jmock.Mockery;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
@@ -38,6 +39,11 @@ public class PriceCalculatorTest {
         BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(itemOne, itemTwo));
 
         assertThat(total, sameBeanAs(new BigDecimal("0.29")));
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsIllegalArgumentExceptionForEmptyList() {
+        priceCalculator.calculateTotalPrice(new ArrayList<>());
     }
 
 

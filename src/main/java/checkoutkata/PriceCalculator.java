@@ -15,6 +15,10 @@ public class PriceCalculator {
     }
 
     public BigDecimal calculateTotalPrice(Iterable<Item> items) {
+        if (!items.iterator().hasNext()) {
+            throw new IllegalArgumentException("no items provided");
+        }
+
         BigDecimal total = BigDecimal.ZERO;
 
         for (Item item : items) {
