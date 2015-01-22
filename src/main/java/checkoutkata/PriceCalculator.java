@@ -2,6 +2,8 @@ package checkoutkata;
 
 import java.math.BigDecimal;
 
+import static java.util.stream.StreamSupport.stream;
+
 public class PriceCalculator {
 
     private final PriceProvider priceProvider;
@@ -19,13 +21,10 @@ public class PriceCalculator {
             throw new IllegalArgumentException("no items provided");
         }
 
-        BigDecimal total = BigDecimal.ZERO;
-
-        for (Item item : items) {
-            total = total.add(priceProvider.getPrice(item));
-        }
-
-        return total;
+        return stream(items.spliterator(), false)
+                .map(priceProvider::getPrice)
+                .reduce(BigDecimal::add)
+                .get();
     }
 
 }
