@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
+import static java.util.Collections.emptyList;
 
 public class PriceCalculatorTest {
 
@@ -24,7 +25,7 @@ public class PriceCalculatorTest {
         Item item = new Item('A');
         priceOf(item, is("0.42"));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(item));
+        BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(item), emptyList());
 
         assertThat(total, sameBeanAs(new BigDecimal("0.42")));
     }
@@ -36,14 +37,14 @@ public class PriceCalculatorTest {
         priceOf(itemOne, is("0.13"));
         priceOf(itemTwo, is("0.16"));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(itemOne, itemTwo));
+        BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(itemOne, itemTwo), emptyList());
 
         assertThat(total, sameBeanAs(new BigDecimal("0.29")));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsIllegalArgumentExceptionForEmptyList() {
-        priceCalculator.calculateTotalPrice(new ArrayList<>());
+        priceCalculator.calculateTotalPrice(new ArrayList<>(), emptyList());
     }
 
 

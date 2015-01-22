@@ -3,28 +3,44 @@ package checkoutkata;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
+import static java.util.Arrays.stream;
 import static org.hamcrest.CoreMatchers.is;
 
 public class PriceCalculatorAcceptanceTest {
 
-    private static final BigDecimal A_PRICE = new BigDecimal("0.50");
-    private static final BigDecimal B_PRICE = new BigDecimal("0.30");
-    private static final BigDecimal C_PRICE = new BigDecimal("0.20");
-    private static final BigDecimal D_PRICE = new BigDecimal("0.15");
+    private static final BigDecimal PRICE_OF_A = price("0.50");
+    private static final BigDecimal PRICE_OF_B = price("0.30");
+    private static final BigDecimal PRICE_OF_C = price("0.20");
+    private static final BigDecimal PRICE_OF_D = price("0.15");
+    private static final BigDecimal SPECIAL_PRICE_OF_3_A = price("1.30");
+    private static final BigDecimal SPECIAL_PRICE_OF_2_B = price("0.45");
 
     private final PriceCalculator priceCalculator = Config.priceCalculator();
 
     @Test
     public void calculatesThePriceOfMultipleItemsWithoutSpecialOffers() {
-        Iterable<Item> items = newArrayList(new Item('A'), new Item('D'), new Item('B'), new Item('D'), new Item('C'));
+        Iterable<Item> items = items('A', 'D', 'B', 'D', 'C');
+        Iterable<Offer> noSpecialOffers = Collections.emptyList();
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(items);
+        BigDecimal total = priceCalculator.calculateTotalPrice(items, noSpecialOffers);
 
-        assertThat(total, is(sameBeanAs(sumOf(A_PRICE, D_PRICE, B_PRICE, D_PRICE, C_PRICE))));
+        assertThat(total, is(sameBeanAs(sumOf(PRICE_OF_A, PRICE_OF_D, PRICE_OF_B, PRICE_OF_D, PRICE_OF_C))));
+    }
+
+    @Test
+    public void calculatesThePriceOfMultipleItemsWithSpecialOffers() {
+        Iterable<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
+        Iterable<Offer> specialOffers = newArrayList(new Offer('A', 3, price("1.30")), new Offer('B', 2, price("0.45")));
+
+        BigDecimal total = priceCalculator.calculateTotalPrice(items, specialOffers);
+
+        assertThat(total, is(sameBeanAs(sumOf(SPECIAL_PRICE_OF_3_A, PRICE_OF_A, SPECIAL_PRICE_OF_2_B, PRICE_OF_C, PRICE_OF_C, PRICE_OF_C))));
     }
 
 
@@ -34,6 +50,14 @@ public class PriceCalculatorAcceptanceTest {
             sum = sum.add(value);
         }
         return sum;
+    }
+
+    private static BigDecimal price(String price) {
+        return new BigDecimal(price);
+    }
+
+    private static Iterable<Item> items(Character... skus) {
+        return stream(skus).map(Item::new).collect(Collectors.toList());
     }
 
 }

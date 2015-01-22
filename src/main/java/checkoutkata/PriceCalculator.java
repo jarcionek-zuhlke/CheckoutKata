@@ -12,7 +12,7 @@ public class PriceCalculator {
         this.priceProvider = priceProvider;
     }
 
-    public BigDecimal calculateTotalPrice(Iterable<Item> items) {
+    public BigDecimal calculateTotalPrice(Iterable<Item> items, Iterable<Offer> specialOffers) {
         if (!items.iterator().hasNext()) {
             throw new IllegalArgumentException("no items provided");
         }
