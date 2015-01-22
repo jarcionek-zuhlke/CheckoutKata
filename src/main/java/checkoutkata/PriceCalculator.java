@@ -2,8 +2,15 @@ package checkoutkata;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.counting;
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.StreamSupport.stream;
 
 public class PriceCalculator {
 
@@ -18,15 +25,7 @@ public class PriceCalculator {
             throw new IllegalArgumentException("no items provided");
         }
 
-        Map<Character, Integer> count = new HashMap<>();
-        for (Item item : items) {
-            char sku = item.getSku();
-            if (count.containsKey(sku)) {
-                count.put(sku, count.get(sku) + 1);
-            } else {
-                count.put(sku, 1);
-            }
-        }
+        Map<Character, Long> count = stream(items.spliterator(), false).collect(groupingBy(Item::getSku, counting()));
 
         Map<Character, Offer> offers = new HashMap<>();
         for (Offer offer : specialOffers) {
@@ -34,14 +33,14 @@ public class PriceCalculator {
         }
 
         BigDecimal total = BigDecimal.ZERO;
-        for (Entry<Character, Integer> entry : count.entrySet()) {
+        for (Entry<Character, Long> entry : count.entrySet()) {
             char sku = entry.getKey();
             BigDecimal individualPrice = priceProvider.getPrice(sku);
-            int itemCount = count.get(sku);
+            long itemCount = count.get(sku);
             if (offers.containsKey(sku)) {
                 Offer offer = offers.get(sku);
-                int multiples = itemCount / offer.getNumberOfItems();
-                int remainder = itemCount % offer.getNumberOfItems();
+                long multiples = itemCount / offer.getNumberOfItems();
+                long remainder = itemCount % offer.getNumberOfItems();
                 total = total
                         .add(offer.getTotalPrice()).multiply(BigDecimal.valueOf(multiples))
                         .add(individualPrice.multiply(BigDecimal.valueOf(remainder)));
