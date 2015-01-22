@@ -9,6 +9,9 @@ public class Offer {
     private final BigDecimal totalPrice;
 
     public Offer(char itemSku, int numberOfItems, BigDecimal totalPrice) {
+        if (numberOfItems <= 0 || totalPrice.signum() != 1) {
+            throw new IllegalArgumentException();
+        }
         this.itemSku = itemSku;
         this.numberOfItems = numberOfItems;
         this.totalPrice = totalPrice;
