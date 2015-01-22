@@ -15,7 +15,13 @@ public class PriceCalculator {
     }
 
     public BigDecimal calculateTotalPrice(Iterable<Item> items) {
-        return priceProvider.getPrice(items.iterator().next());
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (Item item : items) {
+            total = total.add(priceProvider.getPrice(item));
+        }
+
+        return total;
     }
 
 }

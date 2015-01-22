@@ -28,6 +28,18 @@ public class PriceCalculatorTest {
         assertThat(total, sameBeanAs(new BigDecimal("0.42")));
     }
 
+    @Test
+    public void returnsTotalPriceOfTwoDifferentItems() {
+        Item itemOne = new Item('B');
+        Item itemTwo = new Item('C');
+        priceOf(itemOne, is("0.13"));
+        priceOf(itemTwo, is("0.16"));
+
+        BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(itemOne, itemTwo));
+
+        assertThat(total, sameBeanAs(new BigDecimal("0.29")));
+    }
+
 
 
     private void priceOf(final Item item, final BigDecimal price) {
