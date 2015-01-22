@@ -24,6 +24,9 @@ public class PriceProviderFromFile implements PriceProvider {
 
     @Override
     public BigDecimal getPrice(Item item) {
+        if (!prices.containsKey(item.getSku())) {
+            throw new IllegalArgumentException(String.format("No price defined for sku \"%s\"", item.getSku()));
+        }
         return prices.get(item.getSku());
     }
 

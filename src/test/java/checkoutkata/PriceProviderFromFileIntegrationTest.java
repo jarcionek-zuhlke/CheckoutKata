@@ -25,6 +25,11 @@ public class PriceProviderFromFileIntegrationTest {
         assertThat(priceTwo, is(sameBeanAs(new BigDecimal("2.20"))));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void throwsExceptionWhenPriceIsUnknown() {
+        priceProvider.getPrice(new Item('Z'));
+    }
+
 
     private static File resourceFile(String name) {
         try {
