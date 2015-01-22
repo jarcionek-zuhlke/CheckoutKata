@@ -61,7 +61,7 @@ public class PriceCalculatorTest {
     }
 
     @Test
-    public void returnsTotalPriceOfItemsInOfferWithNumberOfItemsEqualToMultipleOfItemsNeegedToQualifyForOffer() {
+    public void returnsTotalPriceOfItemsInOfferWithNumberOfItemsEqualToMultipleOfItemsNeededToQualifyForOffer() {
         Item item = new Item('G');
         priceOf(item, is("0.33"));
 
@@ -73,6 +73,18 @@ public class PriceCalculatorTest {
         assertThat(total, sameBeanAs(new BigDecimal("1.80")));
     }
 
+    @Test
+    public void returnsTotalPriceOfItemsInOfferWithOnlyFewItemsQualifyingForTheOffer() {
+        Item item = new Item('H');
+        priceOf(item, is("0.25"));
+
+        Iterable<Item> items = newArrayList(item, item, item, item, item);
+        Iterable<Offer> offers = newArrayList(new Offer('H', 4, new BigDecimal("0.75")));
+
+        BigDecimal total = priceCalculator.calculateTotalPrice(items, offers);
+
+        assertThat(total, sameBeanAs(new BigDecimal("1.00")));
+    }
 
 
     private void priceOf(final Item item, final BigDecimal price) {

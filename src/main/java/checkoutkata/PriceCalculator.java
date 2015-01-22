@@ -41,7 +41,10 @@ public class PriceCalculator {
             if (offers.containsKey(sku)) {
                 Offer offer = offers.get(sku);
                 int multiples = itemCount / offer.getNumberOfItems();
-                total = total.add(offer.getTotalPrice()).multiply(BigDecimal.valueOf(multiples));
+                int remainder = itemCount % offer.getNumberOfItems();
+                total = total
+                        .add(offer.getTotalPrice()).multiply(BigDecimal.valueOf(multiples))
+                        .add(individualPrice.multiply(BigDecimal.valueOf(remainder)));
             } else {
                 total = total.add(individualPrice.multiply(BigDecimal.valueOf(itemCount)));
             }
