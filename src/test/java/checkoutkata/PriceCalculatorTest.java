@@ -60,6 +60,19 @@ public class PriceCalculatorTest {
         assertThat(total, sameBeanAs(new BigDecimal("0.50")));
     }
 
+    @Test
+    public void returnsTotalPriceOfItemsInOfferWithNumberOfItemsEqualToMultipleOfItemsNeegedToQualifyForOffer() {
+        Item item = new Item('G');
+        priceOf(item, is("0.33"));
+
+        Iterable<Item> items = newArrayList(item, item, item, item, item, item);
+        Iterable<Offer> offers = newArrayList(new Offer('G', 2, new BigDecimal("0.60")));
+
+        BigDecimal total = priceCalculator.calculateTotalPrice(items, offers);
+
+        assertThat(total, sameBeanAs(new BigDecimal("1.80")));
+    }
+
 
 
     private void priceOf(final Item item, final BigDecimal price) {

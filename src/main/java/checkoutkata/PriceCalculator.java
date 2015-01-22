@@ -37,11 +37,13 @@ public class PriceCalculator {
         for (Entry<Character, Integer> entry : count.entrySet()) {
             char sku = entry.getKey();
             BigDecimal individualPrice = priceProvider.getPrice(sku);
-            BigDecimal itemCount = BigDecimal.valueOf(count.get(sku));
+            int itemCount = count.get(sku);
             if (offers.containsKey(sku)) {
-                total = total.add(offers.get(sku).getTotalPrice());
+                Offer offer = offers.get(sku);
+                int multiples = itemCount / offer.getNumberOfItems();
+                total = total.add(offer.getTotalPrice()).multiply(BigDecimal.valueOf(multiples));
             } else {
-                total = total.add(individualPrice.multiply(itemCount));
+                total = total.add(individualPrice.multiply(BigDecimal.valueOf(itemCount)));
             }
         }
 
