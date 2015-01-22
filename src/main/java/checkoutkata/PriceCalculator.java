@@ -2,11 +2,7 @@ package checkoutkata;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.counting;
 import static java.util.stream.Collectors.groupingBy;
@@ -20,7 +16,7 @@ public class PriceCalculator {
         this.priceProvider = priceProvider;
     }
 
-    public BigDecimal calculateTotalPrice(Iterable<Item> items, Iterable<Offer> specialOffers) {
+    public BigDecimal calculateTotalPriceFor(Iterable<Item> items, Iterable<Offer> specialOffers) {
         if (!items.iterator().hasNext()) {
             throw new IllegalArgumentException("no items provided");
         }
@@ -32,24 +28,22 @@ public class PriceCalculator {
             offers.put(offer.getItemSku(), offer);
         }
 
-        BigDecimal total = BigDecimal.ZERO;
-        for (Entry<Character, Long> entry : count.entrySet()) {
-            char sku = entry.getKey();
-            BigDecimal individualPrice = priceProvider.getPrice(sku);
-            long itemCount = count.get(sku);
-            if (offers.containsKey(sku)) {
-                Offer offer = offers.get(sku);
-                long multiples = itemCount / offer.getNumberOfItems();
-                long remainder = itemCount % offer.getNumberOfItems();
-                total = total
-                        .add(offer.getTotalPrice()).multiply(BigDecimal.valueOf(multiples))
-                        .add(individualPrice.multiply(BigDecimal.valueOf(remainder)));
-            } else {
-                total = total.add(individualPrice.multiply(BigDecimal.valueOf(itemCount)));
-            }
-        }
-
-        return total;
+        return count.entrySet().stream()
+                .map(e -> {
+                    char sku = e.getKey();
+                    BigDecimal individualPrice = priceProvider.getPrice(sku);
+                    long itemCount = count.get(sku);
+                    if (offers.containsKey(sku)) {
+                        Offer offer = offers.get(sku);
+                        long multiples = itemCount / offer.getNumberOfItems();
+                        long remainder = itemCount % offer.getNumberOfItems();
+                        return offer.getTotalPrice().multiply(BigDecimal.valueOf(multiples))
+                                .add(individualPrice.multiply(BigDecimal.valueOf(remainder)));
+                    } else {
+                        return individualPrice.multiply(BigDecimal.valueOf(itemCount));
+                    }
+                })
+                .reduce(BigDecimal::add).get();
     }
 
 }

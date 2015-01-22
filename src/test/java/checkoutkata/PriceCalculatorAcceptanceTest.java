@@ -28,7 +28,7 @@ public class PriceCalculatorAcceptanceTest {
         Iterable<Item> items = items('A', 'D', 'B', 'D', 'C');
         Iterable<Offer> noSpecialOffers = Collections.emptyList();
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(items, noSpecialOffers);
+        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, noSpecialOffers);
 
         assertThat(total, is(sameBeanAs(sumOf(PRICE_OF_A, PRICE_OF_D, PRICE_OF_B, PRICE_OF_D, PRICE_OF_C))));
     }
@@ -38,7 +38,7 @@ public class PriceCalculatorAcceptanceTest {
         Iterable<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
         Iterable<Offer> specialOffers = newArrayList(new Offer('A', 3, price("1.30")), new Offer('B', 2, price("0.45")));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(items, specialOffers);
+        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, specialOffers);
 
         assertThat(total, is(sameBeanAs(sumOf(SPECIAL_PRICE_OF_3_A, PRICE_OF_A, SPECIAL_PRICE_OF_2_B, PRICE_OF_C, PRICE_OF_C, PRICE_OF_C))));
     }

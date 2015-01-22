@@ -25,7 +25,7 @@ public class PriceCalculatorTest {
         Item item = new Item('A');
         priceOf(item, is("0.42"));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(item), emptyList());
+        BigDecimal total = priceCalculator.calculateTotalPriceFor(newArrayList(item), emptyList());
 
         assertThat(total, sameBeanAs(new BigDecimal("0.42")));
     }
@@ -37,14 +37,14 @@ public class PriceCalculatorTest {
         priceOf(itemOne, is("0.13"));
         priceOf(itemTwo, is("0.16"));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(newArrayList(itemOne, itemTwo), emptyList());
+        BigDecimal total = priceCalculator.calculateTotalPriceFor(newArrayList(itemOne, itemTwo), emptyList());
 
         assertThat(total, sameBeanAs(new BigDecimal("0.29")));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsIllegalArgumentExceptionForEmptyList() {
-        priceCalculator.calculateTotalPrice(new ArrayList<>(), emptyList());
+        priceCalculator.calculateTotalPriceFor(new ArrayList<>(), emptyList());
     }
 
     @Test
@@ -55,7 +55,7 @@ public class PriceCalculatorTest {
         Iterable<Item> items = newArrayList(item, item, item, item, item);
         Iterable<Offer> offers = newArrayList(new Offer('C', 5, new BigDecimal("0.50")));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(items, offers);
+        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, offers);
 
         assertThat(total, sameBeanAs(new BigDecimal("0.50")));
     }
@@ -68,7 +68,7 @@ public class PriceCalculatorTest {
         Iterable<Item> items = newArrayList(item, item, item, item, item, item);
         Iterable<Offer> offers = newArrayList(new Offer('G', 2, new BigDecimal("0.60")));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(items, offers);
+        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, offers);
 
         assertThat(total, sameBeanAs(new BigDecimal("1.80")));
     }
@@ -81,7 +81,7 @@ public class PriceCalculatorTest {
         Iterable<Item> items = newArrayList(item, item, item, item, item);
         Iterable<Offer> offers = newArrayList(new Offer('H', 4, new BigDecimal("0.75")));
 
-        BigDecimal total = priceCalculator.calculateTotalPrice(items, offers);
+        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, offers);
 
         assertThat(total, sameBeanAs(new BigDecimal("1.00")));
     }
