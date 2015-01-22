@@ -47,11 +47,24 @@ public class PriceCalculatorTest {
         priceCalculator.calculateTotalPrice(new ArrayList<>(), emptyList());
     }
 
+    @Test
+    public void returnsTotalPriceOfItemsInOfferWithTheNumberOfItemsEqualToItemsNeededToQualifyForOffer() {
+        Item item = new Item('C');
+        priceOf(item, is("0.12"));
+
+        Iterable<Item> items = newArrayList(item, item, item, item, item);
+        Iterable<Offer> offers = newArrayList(new Offer('C', 5, new BigDecimal("0.50")));
+
+        BigDecimal total = priceCalculator.calculateTotalPrice(items, offers);
+
+        assertThat(total, sameBeanAs(new BigDecimal("0.50")));
+    }
+
 
 
     private void priceOf(final Item item, final BigDecimal price) {
         context.checking(new Expectations() {{
-            allowing(priceProvider).getPrice(item); will(returnValue(price));
+            allowing(priceProvider).getPrice(item.getSku()); will(returnValue(price));
         }});
     }
 

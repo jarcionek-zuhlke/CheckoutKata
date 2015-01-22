@@ -23,11 +23,11 @@ public class PriceProviderFromFile implements PriceProvider {
     }
 
     @Override
-    public BigDecimal getPrice(Item item) {
-        if (!prices.containsKey(item.getSku())) {
-            throw new IllegalArgumentException(String.format("No price defined for sku \"%s\"", item.getSku()));
+    public BigDecimal getPrice(char sku) {
+        if (!prices.containsKey(sku)) {
+            throw new IllegalArgumentException(String.format("No price defined for sku \"%s\"", sku));
         }
-        return prices.get(item.getSku());
+        return prices.get(sku);
     }
 
 }

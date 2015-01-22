@@ -18,8 +18,8 @@ public class PriceProviderFromFileIntegrationTest {
 
     @Test
     public void returnsPricesFromFile() {
-        BigDecimal priceOne = priceProvider.getPrice(new Item('A'));
-        BigDecimal priceTwo = priceProvider.getPrice(new Item('B'));
+        BigDecimal priceOne = priceProvider.getPrice('A');
+        BigDecimal priceTwo = priceProvider.getPrice('B');
 
         assertThat(priceOne, is(sameBeanAs(new BigDecimal("0.11"))));
         assertThat(priceTwo, is(sameBeanAs(new BigDecimal("2.20"))));
@@ -27,7 +27,7 @@ public class PriceProviderFromFileIntegrationTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenPriceIsUnknown() {
-        priceProvider.getPrice(new Item('Z'));
+        priceProvider.getPrice('Z');
     }
 
 

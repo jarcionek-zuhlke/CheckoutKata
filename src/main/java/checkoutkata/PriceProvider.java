@@ -4,6 +4,6 @@ import java.math.BigDecimal;
 
 public interface PriceProvider {
 
-    public BigDecimal getPrice(Item item);
+    public BigDecimal getPrice(char sku);
 
 }
