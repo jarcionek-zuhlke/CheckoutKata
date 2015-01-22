@@ -13,10 +13,7 @@ public class PriceProviderFromFile implements PriceProvider {
 
     public PriceProviderFromFile(File file) {
         try (Scanner scanner = new Scanner(file)) {
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                prices.put(line.charAt(0), new BigDecimal(line.split(",")[1]));
-            }
+            scanner.forEachRemaining(line -> prices.put(skuFrom(line), priceFrom(line)));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -28,6 +25,15 @@ public class PriceProviderFromFile implements PriceProvider {
             throw new IllegalArgumentException(String.format("No price defined for sku \"%s\"", sku));
         }
         return prices.get(sku);
+    }
+
+
+    private static char skuFrom(String line) {
+        return line.charAt(0);
+    }
+
+    private static BigDecimal priceFrom(String line) {
+        return new BigDecimal(line.split(",")[1]);
     }
 
 }
