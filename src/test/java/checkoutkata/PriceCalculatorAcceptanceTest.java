@@ -36,7 +36,7 @@ public class PriceCalculatorAcceptanceTest {
     @Test
     public void calculatesThePriceOfMultipleItemsWithSpecialOffers() {
         Iterable<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
-        Iterable<Offer> specialOffers = newArrayList(new Offer('A', 3, price("1.30")), new Offer('B', 2, price("0.45")));
+        Iterable<Offer> specialOffers = newArrayList(new Offer('A', 3, SPECIAL_PRICE_OF_3_A), new Offer('B', 2, SPECIAL_PRICE_OF_2_B));
 
         BigDecimal total = priceCalculator.calculateTotalPriceFor(items, specialOffers);
 
