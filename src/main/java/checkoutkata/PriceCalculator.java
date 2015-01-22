@@ -12,10 +12,6 @@ public class PriceCalculator {
         this.priceProvider = priceProvider;
     }
 
-    public static PriceCalculator priceCalculator() {
-        return new PriceCalculator(null);
-    }
-
     public BigDecimal calculateTotalPrice(Iterable<Item> items) {
         if (!items.iterator().hasNext()) {
             throw new IllegalArgumentException("no items provided");

@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.is;
 
 public class PriceProviderFromFileIntegrationTest {
 
-    private static final File FILE = resourceFile("/prices.txt");
+    private static final File FILE = resourceFile("/testPrices.txt");
 
     private final PriceProviderFromFile priceProvider = new PriceProviderFromFile(FILE);
 

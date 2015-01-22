@@ -16,7 +16,7 @@ public class PriceCalculatorAcceptanceTest {
     private static final BigDecimal C_PRICE = new BigDecimal("0.20");
     private static final BigDecimal D_PRICE = new BigDecimal("0.15");
 
-    private final PriceCalculator priceCalculator = PriceCalculator.priceCalculator();
+    private final PriceCalculator priceCalculator = Config.priceCalculator();
 
     @Test
     public void calculatesThePriceOfMultipleItemsWithoutSpecialOffers() {
