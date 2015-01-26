@@ -60,7 +60,7 @@ public class PriceCalculator {
             if (count == offer.getNumberOfItems()) {
                 int standardPriceOfMultipleItems = individualItemPrice * count;
                 count = 0;
-                return standardPriceOfMultipleItems - offer.getTotalPrice();
+                return standardPriceOfMultipleItems - offer.getSpecialPrice();
             }
             return 0;
         }

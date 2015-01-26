@@ -3,22 +3,22 @@ package checkoutkata;
 public class Offer {
 
     private final int numberOfItems;
-    private final int totalPrice;
+    private final int specialPrice;
 
-    public Offer(int numberOfItems, int totalPrice) {
-        if (numberOfItems <= 0 || totalPrice <= 0) {
+    public Offer(int numberOfItems, int specialPrice) {
+        if (numberOfItems <= 0 || specialPrice <= 0) {
             throw new IllegalArgumentException();
         }
         this.numberOfItems = numberOfItems;
-        this.totalPrice = totalPrice;
+        this.specialPrice = specialPrice;
     }
 
     public int getNumberOfItems() {
         return numberOfItems;
     }
 
-    public int getTotalPrice() {
-        return totalPrice;
+    public int getSpecialPrice() {
+        return specialPrice;
     }
 
 }
