@@ -6,6 +6,10 @@ import java.net.URL;
 
 public class Config {
 
+    public static PriceFormatter priceFormatter() {
+        return new PriceFormatter();
+    }
+
     public static PriceCalculator priceCalculator() {
         return new PriceCalculator(priceProvider());
     }
