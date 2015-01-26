@@ -7,11 +7,11 @@ import java.net.URL;
 public class Config {
 
     public static PriceFormatter priceFormatter() {
-        return new PriceFormatter();
+        return new PriceFormatter(null);
     }
 
     public static PriceCalculator priceCalculator() {
-        return new PriceCalculator(priceProvider());
+        return new FunctionalPriceCalculator(priceProvider());
     }
 
     private static PriceProvider priceProvider() {
