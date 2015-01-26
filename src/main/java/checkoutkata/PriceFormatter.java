@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 
 public class PriceFormatter {
 
-    private static final NumberFormat FORMAT = new DecimalFormat("£0.00");
+    private static final NumberFormat FORMAT = new DecimalFormat("£#,##0.00");
 
     private final PriceCalculator priceCalculator;
 

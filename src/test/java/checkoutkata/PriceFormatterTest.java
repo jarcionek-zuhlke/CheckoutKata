@@ -40,6 +40,15 @@ public class PriceFormatterTest {
         assertThat(formattedPrice, equalTo("£3.69"));
     }
 
+    @Test
+    public void groupsDigitsOfThreeForLargeNumbers() {
+        priceCalculatorWillReturn(1234567890);
+
+        String formattedPrice = priceFormatter.calculateTotalPriceFor(ITEMS, OFFERS);
+
+        assertThat(formattedPrice, equalTo("£12,345,678.90"));
+    }
+
 
     private void priceCalculatorWillReturn(final int price) {
         context.checking(new Expectations() {{
