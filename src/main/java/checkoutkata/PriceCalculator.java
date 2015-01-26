@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.groupingBy;
-import static java.util.stream.Collectors.reducing;
-import static java.util.stream.StreamSupport.stream;
-
 public class PriceCalculator {
 
     private final PriceProvider priceProvider;
@@ -16,19 +12,10 @@ public class PriceCalculator {
         this.priceProvider = priceProvider;
     }
 
-    public int calculateTotalPriceFor(Stream<Item> items, Iterable<Offer> specialOffers) {
-        Map<Character, Offer> offers = stream(specialOffers.spliterator(), false)
-                .collect(groupingBy(Offer::getItemSku, reducing(null, (a, b) -> b)));
-
-        Map<Character, CountingOffer> offerWrappers = new HashMap<>();
-
-        offers.entrySet().forEach(entry -> {
-            offerWrappers.put(entry.getKey(), new CountingOffer(entry.getValue()));
-        });
-
+    public int calculateTotalPriceFor(Stream<Item> items, Map<Item, Offer> offers) {
         return items
                 .reduce(
-                        new Result(offerWrappers),
+                        new Result(offers),
                         Result::withCostAndPossibleDiscountOfItem,
                         (currentItem, nextItem) -> nextItem
                 )
@@ -41,8 +28,9 @@ public class PriceCalculator {
 
         private int total = 0;
 
-        public Result(Map<Character, CountingOffer> countingOffers) {
-            this.countingOffers = countingOffers;
+        public Result(Map<Item, Offer> offers) {
+            this.countingOffers = new HashMap<>();
+            offers.entrySet().forEach(entry -> countingOffers.put(entry.getKey().getSku(), new CountingOffer(entry.getValue())));
         }
 
         private Result withCostAndPossibleDiscountOfItem(Item item) {

@@ -1,11 +1,12 @@
 package checkoutkata;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static java.util.Arrays.stream;
@@ -25,7 +26,7 @@ public class PriceCalculatorAcceptanceTest {
     @Test
     public void calculatesThePriceOfMultipleItemsWithoutSpecialOffers() {
         Stream<Item> items = items('A', 'D', 'B', 'D', 'C');
-        Iterable<Offer> noSpecialOffers = Collections.emptyList();
+        Map<Item, Offer> noSpecialOffers = Collections.emptyMap();
 
         int total = priceCalculator.calculateTotalPriceFor(items, noSpecialOffers);
 
@@ -35,7 +36,7 @@ public class PriceCalculatorAcceptanceTest {
     @Test
     public void calculatesThePriceOfMultipleItemsWithSpecialOffers() {
         Stream<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
-        Iterable<Offer> specialOffers = newArrayList(new Offer('A', 3, SPECIAL_PRICE_OF_3_A), new Offer('B', 2, SPECIAL_PRICE_OF_2_B));
+        Map<Item, Offer> specialOffers = ImmutableMap.of(new Item('A'), new Offer('A', 3, SPECIAL_PRICE_OF_3_A), new Item('B'), new Offer('B', 2, SPECIAL_PRICE_OF_2_B));
 
         int total = priceCalculator.calculateTotalPriceFor(items, specialOffers);
 

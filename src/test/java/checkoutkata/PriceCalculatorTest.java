@@ -1,16 +1,17 @@
 package checkoutkata;
 
+import com.google.common.collect.ImmutableMap;
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
-import static java.util.Collections.emptyList;
+import static java.util.Collections.emptyMap;
 
 public class PriceCalculatorTest {
 
@@ -25,7 +26,7 @@ public class PriceCalculatorTest {
         Item item = new Item('A');
         priceOf(item, is(42));
 
-        int total = priceCalculator.calculateTotalPriceFor(stream(item), emptyList());
+        int total = priceCalculator.calculateTotalPriceFor(stream(item), emptyMap());
 
         assertThat(total, sameBeanAs(42));
     }
@@ -37,7 +38,7 @@ public class PriceCalculatorTest {
         priceOf(itemOne, is(13));
         priceOf(itemTwo, is(16));
 
-        int total = priceCalculator.calculateTotalPriceFor(stream(itemOne, itemTwo), emptyList());
+        int total = priceCalculator.calculateTotalPriceFor(stream(itemOne, itemTwo), emptyMap());
 
         assertThat(total, sameBeanAs(29));
     }
@@ -48,7 +49,7 @@ public class PriceCalculatorTest {
         priceOf(item, is(12));
 
         Stream<Item> items = stream(item, item, item, item, item);
-        Iterable<Offer> offers = newArrayList(new Offer('C', 5, 50));
+        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer('C', 5, 50));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
@@ -61,7 +62,7 @@ public class PriceCalculatorTest {
         priceOf(item, is(33));
 
         Stream<Item> items = stream(item, item, item, item, item, item);
-        Iterable<Offer> offers = newArrayList(new Offer('G', 2, 60));
+        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer('G', 2, 60));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
@@ -74,7 +75,7 @@ public class PriceCalculatorTest {
         priceOf(item, is(25));
 
         Stream<Item> items = stream(item, item, item, item, item);
-        Iterable<Offer> offers = newArrayList(new Offer('H', 4, 75));
+        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer('H', 4, 75));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
