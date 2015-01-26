@@ -24,19 +24,19 @@ public class PriceCalculator {
 
     private class Result {
 
-        private final Map<Character, CountingOffer> countingOffers;
+        private final Map<Item, CountingOffer> countingOffers;
 
         private int total = 0;
 
         public Result(Map<Item, Offer> offers) {
             this.countingOffers = new HashMap<>();
-            offers.entrySet().forEach(entry -> countingOffers.put(entry.getKey().getSku(), new CountingOffer(entry.getValue())));
+            offers.entrySet().forEach(entry -> countingOffers.put(entry.getKey(), new CountingOffer(entry.getValue())));
         }
 
         private Result withCostAndPossibleDiscountOfItem(Item item) {
             int individualItemPrice = priceOf(item);
             total += individualItemPrice;
-            CountingOffer countingOffer = countingOffers.get(item.getSku());
+            CountingOffer countingOffer = countingOffers.get(item);
             if (countingOffer != null) {
                 total -= countingOffer.calculateDiscount(individualItemPrice);
             }
@@ -69,7 +69,7 @@ public class PriceCalculator {
 
 
     private int priceOf(Item item) {
-        return priceProvider.getPrice(item.getSku());
+        return priceProvider.getPrice(item);
     }
 
 }

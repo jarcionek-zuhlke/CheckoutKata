@@ -85,7 +85,7 @@ public class PriceCalculatorTest {
 
     private void priceOf(final Item item, final int price) {
         context.checking(new Expectations() {{
-            allowing(priceProvider).getPrice(item.getSku()); will(returnValue(price));
+            allowing(priceProvider).getPrice(item); will(returnValue(price));
         }});
     }
 

@@ -17,13 +17,13 @@ public class PriceProviderFromFileIntegrationTest {
 
     @Test
     public void returnsPricesFromFile() {
-        assertThat(priceProvider.getPrice('A'), is(sameBeanAs(11)));
-        assertThat(priceProvider.getPrice('B'), is(sameBeanAs(220)));
+        assertThat(priceProvider.getPrice(new Item('A')), is(sameBeanAs(11)));
+        assertThat(priceProvider.getPrice(new Item('B')), is(sameBeanAs(220)));
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void throwsExceptionWhenPriceIsUnknown() {
-        priceProvider.getPrice('Z');
+        priceProvider.getPrice(new Item('Z'));
     }
 
 

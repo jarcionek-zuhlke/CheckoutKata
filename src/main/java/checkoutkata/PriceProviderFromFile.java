@@ -10,27 +10,27 @@ import static java.lang.Integer.parseInt;
 
 public class PriceProviderFromFile implements PriceProvider {
 
-    private final Map<Character, Integer> prices = new HashMap<>();
+    private final Map<Item, Integer> prices = new HashMap<>();
 
     public PriceProviderFromFile(File file) {
         try (Scanner scanner = new Scanner(file)) {
-            scanner.forEachRemaining(line -> prices.put(skuFrom(line), priceFrom(line)));
+            scanner.forEachRemaining(line -> prices.put(itemFrom(line), priceFrom(line)));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public int getPrice(char sku) {
-        if (!prices.containsKey(sku)) {
-            throw new IllegalArgumentException(String.format("No price defined for sku \"%s\"", sku));
+    public int getPrice(Item item) {
+        if (!prices.containsKey(item)) {
+            throw new IllegalArgumentException(String.format("No price defined for sku \"%s\"", item.getSku()));
         }
-        return prices.get(sku);
+        return prices.get(item);
     }
 
 
-    private static char skuFrom(String line) {
-        return line.charAt(0);
+    private static Item itemFrom(String line) {
+        return new Item(line.charAt(0));
     }
 
     private static int priceFrom(String line) {
