@@ -1,7 +1,5 @@
 package checkoutkata;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +15,7 @@ public class PriceCalculator {
         this.priceProvider = priceProvider;
     }
 
-    public BigDecimal calculateTotalPriceFor(Iterable<Item> items, Iterable<Offer> specialOffers) {
+    public int calculateTotalPriceFor(Iterable<Item> items, Iterable<Offer> specialOffers) {
         if (isEmpty(items)) {
             throw new IllegalArgumentException("no items provided");
         }
@@ -35,7 +33,7 @@ public class PriceCalculator {
                         Result::withCostAndPossibleDiscountOfItem,
                         (currentItem, nextItem) -> nextItem
                 )
-                .getTotalAsBigDecimal();
+                .total;
     }
 
     private class Result {
@@ -46,10 +44,6 @@ public class PriceCalculator {
 
         public Result(Map<Character, CountingOffer> countingOffers) {
             this.countingOffers = countingOffers;
-        }
-
-        public BigDecimal getTotalAsBigDecimal() {
-            return BigDecimal.valueOf(total).divide(BigDecimal.valueOf(100), 2, RoundingMode.UNNECESSARY);
         }
 
         private Result withCostAndPossibleDiscountOfItem(Item item) {
@@ -79,7 +73,7 @@ public class PriceCalculator {
             if (count == offer.getNumberOfItems()) {
                 int standardPriceOfMultipleItems = individualItemPrice * count;
                 count = 0;
-                return standardPriceOfMultipleItems - inPence(offer.getTotalPrice());
+                return standardPriceOfMultipleItems - offer.getTotalPrice();
             }
             return 0;
         }
@@ -88,11 +82,7 @@ public class PriceCalculator {
 
 
     private int priceOf(Item item) {
-        return inPence(priceProvider.getPrice(item.getSku()));
-    }
-
-    private static int inPence(BigDecimal price) {
-        return price.multiply(BigDecimal.valueOf(100)).intValue();
+        return priceProvider.getPrice(item.getSku());
     }
 
     private static boolean isEmpty(Iterable<Item> items) {

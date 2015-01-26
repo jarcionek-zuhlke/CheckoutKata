@@ -4,7 +4,6 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -23,23 +22,23 @@ public class PriceCalculatorTest {
     @Test
     public void returnsPriceOfItemForSingleItem() {
         Item item = new Item('A');
-        priceOf(item, is("0.42"));
+        priceOf(item, is(42));
 
-        BigDecimal total = priceCalculator.calculateTotalPriceFor(newArrayList(item), emptyList());
+        int total = priceCalculator.calculateTotalPriceFor(newArrayList(item), emptyList());
 
-        assertThat(total, sameBeanAs(new BigDecimal("0.42")));
+        assertThat(total, sameBeanAs(42));
     }
 
     @Test
     public void returnsTotalPriceOfTwoDifferentItems() {
         Item itemOne = new Item('B');
         Item itemTwo = new Item('C');
-        priceOf(itemOne, is("0.13"));
-        priceOf(itemTwo, is("0.16"));
+        priceOf(itemOne, is(13));
+        priceOf(itemTwo, is(16));
 
-        BigDecimal total = priceCalculator.calculateTotalPriceFor(newArrayList(itemOne, itemTwo), emptyList());
+        int total = priceCalculator.calculateTotalPriceFor(newArrayList(itemOne, itemTwo), emptyList());
 
-        assertThat(total, sameBeanAs(new BigDecimal("0.29")));
+        assertThat(total, sameBeanAs(29));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -50,51 +49,51 @@ public class PriceCalculatorTest {
     @Test
     public void returnsTotalPriceOfItemsInOfferWithTheNumberOfItemsEqualToItemsNeededToQualifyForOffer() {
         Item item = new Item('C');
-        priceOf(item, is("0.12"));
+        priceOf(item, is(12));
 
         Iterable<Item> items = newArrayList(item, item, item, item, item);
-        Iterable<Offer> offers = newArrayList(new Offer('C', 5, new BigDecimal("0.50")));
+        Iterable<Offer> offers = newArrayList(new Offer('C', 5, 50));
 
-        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, offers);
+        int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
-        assertThat(total, sameBeanAs(new BigDecimal("0.50")));
+        assertThat(total, sameBeanAs(50));
     }
 
     @Test
     public void returnsTotalPriceOfItemsInOfferWithNumberOfItemsEqualToMultipleOfItemsNeededToQualifyForOffer() {
         Item item = new Item('G');
-        priceOf(item, is("0.33"));
+        priceOf(item, is(33));
 
         Iterable<Item> items = newArrayList(item, item, item, item, item, item);
-        Iterable<Offer> offers = newArrayList(new Offer('G', 2, new BigDecimal("0.60")));
+        Iterable<Offer> offers = newArrayList(new Offer('G', 2, 60));
 
-        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, offers);
+        int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
-        assertThat(total, sameBeanAs(new BigDecimal("1.80")));
+        assertThat(total, sameBeanAs(180));
     }
 
     @Test
     public void returnsTotalPriceOfItemsInOfferWithOnlyFewItemsQualifyingForTheOffer() {
         Item item = new Item('H');
-        priceOf(item, is("0.25"));
+        priceOf(item, is(25));
 
         Iterable<Item> items = newArrayList(item, item, item, item, item);
-        Iterable<Offer> offers = newArrayList(new Offer('H', 4, new BigDecimal("0.75")));
+        Iterable<Offer> offers = newArrayList(new Offer('H', 4, 75));
 
-        BigDecimal total = priceCalculator.calculateTotalPriceFor(items, offers);
+        int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
-        assertThat(total, sameBeanAs(new BigDecimal("1.00")));
+        assertThat(total, sameBeanAs(100));
     }
 
 
-    private void priceOf(final Item item, final BigDecimal price) {
+    private void priceOf(final Item item, final int price) {
         context.checking(new Expectations() {{
             allowing(priceProvider).getPrice(item.getSku()); will(returnValue(price));
         }});
     }
 
-    private static BigDecimal is(String value) {
-        return new BigDecimal(value);
+    private static int is(int value) {
+        return value;
     }
 
 }

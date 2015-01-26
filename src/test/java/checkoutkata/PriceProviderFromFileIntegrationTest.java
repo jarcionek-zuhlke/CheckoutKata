@@ -3,7 +3,6 @@ package checkoutkata;
 import org.junit.Test;
 
 import java.io.File;
-import java.math.BigDecimal;
 import java.net.URISyntaxException;
 
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
@@ -18,11 +17,8 @@ public class PriceProviderFromFileIntegrationTest {
 
     @Test
     public void returnsPricesFromFile() {
-        BigDecimal priceOne = priceProvider.getPrice('A');
-        BigDecimal priceTwo = priceProvider.getPrice('B');
-
-        assertThat(priceOne, is(sameBeanAs(new BigDecimal("0.11"))));
-        assertThat(priceTwo, is(sameBeanAs(new BigDecimal("2.20"))));
+        assertThat(priceProvider.getPrice('A'), is(sameBeanAs(11)));
+        assertThat(priceProvider.getPrice('B'), is(sameBeanAs(220)));
     }
 
     @Test(expected = IllegalArgumentException.class)

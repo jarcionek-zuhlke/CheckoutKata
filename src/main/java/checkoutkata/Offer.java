@@ -1,15 +1,13 @@
 package checkoutkata;
 
-import java.math.BigDecimal;
-
 public class Offer {
 
     private final char itemSku;
     private final int numberOfItems;
-    private final BigDecimal totalPrice;
+    private final int totalPrice;
 
-    public Offer(char itemSku, int numberOfItems, BigDecimal totalPrice) {
-        if (numberOfItems <= 0 || totalPrice.signum() != 1) {
+    public Offer(char itemSku, int numberOfItems, int totalPrice) {
+        if (numberOfItems <= 0 || totalPrice <= 0) {
             throw new IllegalArgumentException();
         }
         this.itemSku = itemSku;
@@ -25,7 +23,7 @@ public class Offer {
         return numberOfItems;
     }
 
-    public BigDecimal getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
