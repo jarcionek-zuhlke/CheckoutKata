@@ -36,7 +36,7 @@ public class PriceCalculatorAcceptanceTest {
     @Test
     public void calculatesThePriceOfMultipleItemsWithSpecialOffers() {
         Stream<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
-        Map<Item, Offer> specialOffers = ImmutableMap.of(new Item('A'), new Offer('A', 3, SPECIAL_PRICE_OF_3_A), new Item('B'), new Offer('B', 2, SPECIAL_PRICE_OF_2_B));
+        Map<Item, Offer> specialOffers = ImmutableMap.of(new Item('A'), new Offer(3, SPECIAL_PRICE_OF_3_A), new Item('B'), new Offer(2, SPECIAL_PRICE_OF_2_B));
 
         int total = priceCalculator.calculateTotalPriceFor(items, specialOffers);
 

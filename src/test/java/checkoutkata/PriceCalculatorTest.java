@@ -49,7 +49,7 @@ public class PriceCalculatorTest {
         priceOf(item, is(12));
 
         Stream<Item> items = stream(item, item, item, item, item);
-        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer('C', 5, 50));
+        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer(5, 50));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
@@ -62,7 +62,7 @@ public class PriceCalculatorTest {
         priceOf(item, is(33));
 
         Stream<Item> items = stream(item, item, item, item, item, item);
-        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer('G', 2, 60));
+        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer(2, 60));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
@@ -75,7 +75,7 @@ public class PriceCalculatorTest {
         priceOf(item, is(25));
 
         Stream<Item> items = stream(item, item, item, item, item);
-        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer('H', 4, 75));
+        Map<Item, Offer> offers = ImmutableMap.of(item, new Offer(4, 75));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
 
