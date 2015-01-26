@@ -2,6 +2,7 @@ package checkoutkata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.reducing;
@@ -15,19 +16,17 @@ public class PriceCalculator {
         this.priceProvider = priceProvider;
     }
 
-    public int calculateTotalPriceFor(Iterable<Item> items, Iterable<Offer> specialOffers) {
-        if (isEmpty(items)) {
-            throw new IllegalArgumentException("no items provided");
-        }
-
+    public int calculateTotalPriceFor(Stream<Item> items, Iterable<Offer> specialOffers) {
         Map<Character, Offer> offers = stream(specialOffers.spliterator(), false)
                 .collect(groupingBy(Offer::getItemSku, reducing(null, (a, b) -> b)));
 
         Map<Character, CountingOffer> offerWrappers = new HashMap<>();
 
-        offers.entrySet().forEach(entry -> {offerWrappers.put(entry.getKey(), new CountingOffer(entry.getValue()));});
+        offers.entrySet().forEach(entry -> {
+            offerWrappers.put(entry.getKey(), new CountingOffer(entry.getValue()));
+        });
 
-        return stream(items.spliterator(), false)
+        return items
                 .reduce(
                         new Result(offerWrappers),
                         Result::withCostAndPossibleDiscountOfItem,
@@ -83,10 +82,6 @@ public class PriceCalculator {
 
     private int priceOf(Item item) {
         return priceProvider.getPrice(item.getSku());
-    }
-
-    private static boolean isEmpty(Iterable<Item> items) {
-        return !items.iterator().hasNext();
     }
 
 }

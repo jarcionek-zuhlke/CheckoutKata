@@ -3,7 +3,7 @@ package checkoutkata;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
@@ -24,7 +24,7 @@ public class PriceCalculatorAcceptanceTest {
 
     @Test
     public void calculatesThePriceOfMultipleItemsWithoutSpecialOffers() {
-        Iterable<Item> items = items('A', 'D', 'B', 'D', 'C');
+        Stream<Item> items = items('A', 'D', 'B', 'D', 'C');
         Iterable<Offer> noSpecialOffers = Collections.emptyList();
 
         int total = priceCalculator.calculateTotalPriceFor(items, noSpecialOffers);
@@ -34,7 +34,7 @@ public class PriceCalculatorAcceptanceTest {
 
     @Test
     public void calculatesThePriceOfMultipleItemsWithSpecialOffers() {
-        Iterable<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
+        Stream<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
         Iterable<Offer> specialOffers = newArrayList(new Offer('A', 3, SPECIAL_PRICE_OF_3_A), new Offer('B', 2, SPECIAL_PRICE_OF_2_B));
 
         int total = priceCalculator.calculateTotalPriceFor(items, specialOffers);
@@ -43,8 +43,8 @@ public class PriceCalculatorAcceptanceTest {
     }
 
 
-    private static Iterable<Item> items(Character... skus) {
-        return stream(skus).map(Item::new).collect(Collectors.toList());
+    private static Stream<Item> items(Character... skus) {
+        return stream(skus).map(Item::new);
     }
 
 }

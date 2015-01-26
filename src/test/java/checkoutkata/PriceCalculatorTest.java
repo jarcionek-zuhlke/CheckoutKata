@@ -4,7 +4,8 @@ import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static com.shazam.shazamcrest.MatcherAssert.assertThat;
@@ -24,7 +25,7 @@ public class PriceCalculatorTest {
         Item item = new Item('A');
         priceOf(item, is(42));
 
-        int total = priceCalculator.calculateTotalPriceFor(newArrayList(item), emptyList());
+        int total = priceCalculator.calculateTotalPriceFor(stream(item), emptyList());
 
         assertThat(total, sameBeanAs(42));
     }
@@ -36,14 +37,9 @@ public class PriceCalculatorTest {
         priceOf(itemOne, is(13));
         priceOf(itemTwo, is(16));
 
-        int total = priceCalculator.calculateTotalPriceFor(newArrayList(itemOne, itemTwo), emptyList());
+        int total = priceCalculator.calculateTotalPriceFor(stream(itemOne, itemTwo), emptyList());
 
         assertThat(total, sameBeanAs(29));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void throwsIllegalArgumentExceptionForEmptyList() {
-        priceCalculator.calculateTotalPriceFor(new ArrayList<>(), emptyList());
     }
 
     @Test
@@ -51,7 +47,7 @@ public class PriceCalculatorTest {
         Item item = new Item('C');
         priceOf(item, is(12));
 
-        Iterable<Item> items = newArrayList(item, item, item, item, item);
+        Stream<Item> items = stream(item, item, item, item, item);
         Iterable<Offer> offers = newArrayList(new Offer('C', 5, 50));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
@@ -64,7 +60,7 @@ public class PriceCalculatorTest {
         Item item = new Item('G');
         priceOf(item, is(33));
 
-        Iterable<Item> items = newArrayList(item, item, item, item, item, item);
+        Stream<Item> items = stream(item, item, item, item, item, item);
         Iterable<Offer> offers = newArrayList(new Offer('G', 2, 60));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
@@ -77,7 +73,7 @@ public class PriceCalculatorTest {
         Item item = new Item('H');
         priceOf(item, is(25));
 
-        Iterable<Item> items = newArrayList(item, item, item, item, item);
+        Stream<Item> items = stream(item, item, item, item, item);
         Iterable<Offer> offers = newArrayList(new Offer('H', 4, 75));
 
         int total = priceCalculator.calculateTotalPriceFor(items, offers);
@@ -94,6 +90,10 @@ public class PriceCalculatorTest {
 
     private static int is(int value) {
         return value;
+    }
+
+    private static Stream<Item> stream(Item... objects) {
+        return Arrays.stream(objects);
     }
 
 }
