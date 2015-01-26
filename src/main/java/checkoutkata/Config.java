@@ -7,7 +7,7 @@ import java.net.URL;
 public class Config {
 
     public static PriceFormatter priceFormatter() {
-        return new PriceFormatter(null);
+        return new PriceFormatter(priceCalculator());
     }
 
     public static PriceCalculator priceCalculator() {

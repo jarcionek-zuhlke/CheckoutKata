@@ -23,12 +23,21 @@ public class PriceFormatterTest {
     private final PriceFormatter priceFormatter = new PriceFormatter(priceCalculator);
 
     @Test
-    public void formatsWithOneLeadingZeroAndTwoTrailingZeros() {
+    public void formatsZeroPriceWithOneLeadingZeroAndTwoTrailingZeros() {
         priceCalculatorWillReturn(0);
 
         String formattedPrice = priceFormatter.calculateTotalPriceFor(ITEMS, OFFERS);
 
         assertThat(formattedPrice, equalTo("£0.00"));
+    }
+
+    @Test
+    public void correctlyConvertsPenceIntoPoundsWithDecimalPlace() {
+        priceCalculatorWillReturn(369);
+
+        String formattedPrice = priceFormatter.calculateTotalPriceFor(ITEMS, OFFERS);
+
+        assertThat(formattedPrice, equalTo("£3.69"));
     }
 
 
