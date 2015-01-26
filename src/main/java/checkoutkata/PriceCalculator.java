@@ -34,7 +34,7 @@ public class PriceCalculator {
         }
 
         private Result withCostAndPossibleDiscountOfItem(Item item) {
-            int individualItemPrice = priceOf(item);
+            int individualItemPrice = priceProvider.getPrice(item);
             total += individualItemPrice;
             CountingOffer countingOffer = countingOffers.get(item);
             if (countingOffer != null) {
@@ -65,11 +65,6 @@ public class PriceCalculator {
             return 0;
         }
 
-    }
-
-
-    private int priceOf(Item item) {
-        return priceProvider.getPrice(item);
     }
 
 }
