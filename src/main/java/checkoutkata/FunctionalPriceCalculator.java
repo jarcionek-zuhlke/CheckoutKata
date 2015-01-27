@@ -1,8 +1,10 @@
 package checkoutkata;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toMap;
 
 public class FunctionalPriceCalculator implements PriceCalculator {
 
@@ -30,8 +32,8 @@ public class FunctionalPriceCalculator implements PriceCalculator {
         private int total = 0;
 
         public Result(Map<Item, Offer> offers) {
-            this.countingOffers = new HashMap<>();
-            offers.entrySet().forEach(entry -> countingOffers.put(entry.getKey(), new CountingOffer(entry.getValue())));
+            this.countingOffers = offers.entrySet().stream()
+                    .collect(toMap(Entry::getKey, entry -> new CountingOffer(entry.getValue())));
         }
 
         private Result withCostAndPossibleDiscountOfItem(Item item) {
