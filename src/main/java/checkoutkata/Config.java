@@ -11,7 +11,7 @@ public class Config {
     }
 
     public static PriceCalculator priceCalculator() {
-        return new FunctionalPriceCalculator(priceProvider());
+        return new PriceCalculator(priceProvider());
     }
 
     private static PriceProvider priceProvider() {

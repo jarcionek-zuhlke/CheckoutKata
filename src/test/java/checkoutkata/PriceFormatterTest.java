@@ -2,6 +2,7 @@ package checkoutkata;
 
 import org.jmock.Expectations;
 import org.jmock.Mockery;
+import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Test;
 
 import java.util.Map;
@@ -16,7 +17,9 @@ public class PriceFormatterTest {
     private static final Stream<Item> ITEMS = Stream.empty();
     private static final Map<Item, Offer> OFFERS = emptyMap();
 
-    private final Mockery context = new Mockery();
+    private final Mockery context = new Mockery() {{
+            setImposteriser(ClassImposteriser.INSTANCE);
+    }};
 
     private final PriceCalculator priceCalculator = context.mock(PriceCalculator.class);
 

@@ -13,13 +13,13 @@ import static com.shazam.shazamcrest.MatcherAssert.assertThat;
 import static com.shazam.shazamcrest.matcher.Matchers.sameBeanAs;
 import static java.util.Collections.emptyMap;
 
-public class FunctionalPriceCalculatorTest {
+public class PriceCalculatorTest {
 
     private final Mockery context = new Mockery();
 
     private final PriceProvider priceProvider = context.mock(PriceProvider.class);
 
-    private final FunctionalPriceCalculator priceCalculator = new FunctionalPriceCalculator(priceProvider);
+    private final PriceCalculator priceCalculator = new PriceCalculator(priceProvider);
 
     @Test
     public void returnsPriceOfItemForSingleItem() {
