@@ -1,6 +1,5 @@
 package checkoutkata;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -15,26 +14,23 @@ import static org.hamcrest.CoreMatchers.is;
 @SuppressWarnings("UnusedDeclaration")
 public class PriceFormatterAcceptanceTest {
 
-    private static final int PRICE_OF_A = 50;
-    private static final int PRICE_OF_B = 30;
-    private static final int PRICE_OF_D = 15;
-    private static final int SPECIAL_PRICE_OF_3_A = 130;
-    private static final int SPECIAL_PRICE_OF_2_B = 45;
+    private static final int APPLE_PRICE = 60;
+    private static final int ORANGE_PRICE = 25;
 
     private final PriceFormatter priceFormatter = Config.priceFormatter();
 
     @Test
     public void returnsStringRepresentationOfTheTotalPrice() {
-        Stream<Item> items = items('B', 'A', 'B', 'B', 'D');
-        Map<Item, Offer> offers = ImmutableMap.of(new Item('A'), new Offer(3, SPECIAL_PRICE_OF_3_A), new Item('B'), new Offer(2, SPECIAL_PRICE_OF_2_B));
+        Stream<Item> items = items("Orange", "Apple", "Apple");
+        Map<Item, Offer> noOffers = Collections.emptyMap();
 
-        String totalPrice = priceFormatter.calculateTotalPriceFor(items, offers);
+        String totalPrice = priceFormatter.calculateTotalPriceFor(items, noOffers);
 
-        assertThat(totalPrice, is(sameBeanAs("£1.40"))); // 0.30 + 0.45 + 0.50 + 0.15
+        assertThat(totalPrice, is(sameBeanAs("£1.45")));
     }
 
-    private static Stream<Item> items(Character... skus) {
-        return stream(skus).map(Item::new);
+    private static Stream<Item> items(String... names) {
+        return stream(names).map(Item::new);
     }
 
 }

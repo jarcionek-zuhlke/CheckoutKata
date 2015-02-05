@@ -14,38 +14,37 @@ import static org.hamcrest.CoreMatchers.is;
 
 public class PriceCalculatorAcceptanceTest {
 
-    private static final int PRICE_OF_A = 50;
-    private static final int PRICE_OF_B = 30;
-    private static final int PRICE_OF_C = 20;
-    private static final int PRICE_OF_D = 15;
-    private static final int SPECIAL_PRICE_OF_3_A = 130;
-    private static final int SPECIAL_PRICE_OF_2_B = 45;
+    private static final int APPLE_PRICE = 60;
+    private static final int ORANGE_PRICE = 25;
 
     private final PriceCalculator priceCalculator = Config.priceCalculator();
 
     @Test
     public void calculatesThePriceOfMultipleItemsWithoutSpecialOffers() {
-        Stream<Item> items = items('A', 'D', 'B', 'D', 'C');
+        Stream<Item> items = items("Apple", "Apple", "Orange", "Apple");
         Map<Item, Offer> noSpecialOffers = Collections.emptyMap();
 
         int total = priceCalculator.calculateTotalPriceFor(items, noSpecialOffers);
 
-        assertThat(total, is(sameBeanAs(PRICE_OF_A + PRICE_OF_D + PRICE_OF_B + PRICE_OF_D + PRICE_OF_C)));
+        assertThat(total, is(sameBeanAs(APPLE_PRICE * 3 + ORANGE_PRICE)));
     }
 
     @Test
     public void calculatesThePriceOfMultipleItemsWithSpecialOffers() {
-        Stream<Item> items = items('A', 'A', 'A', 'A', 'B', 'B', 'C', 'C', 'C');
-        Map<Item, Offer> specialOffers = ImmutableMap.of(new Item('A'), new Offer(3, SPECIAL_PRICE_OF_3_A), new Item('B'), new Offer(2, SPECIAL_PRICE_OF_2_B));
+        Stream<Item> items = items("Apple", "Apple", "Apple", "Orange", "Orange", "Orange", "Orange");
+        Map<Item, Offer> specialOffers = ImmutableMap.of(
+                new Item("Apple"), new Offer(2, APPLE_PRICE),
+                new Item("Orange"), new Offer(3, ORANGE_PRICE * 2)
+        );
 
         int total = priceCalculator.calculateTotalPriceFor(items, specialOffers);
 
-        assertThat(total, is(sameBeanAs(SPECIAL_PRICE_OF_3_A + PRICE_OF_A + SPECIAL_PRICE_OF_2_B + 3 * PRICE_OF_C)));
+        assertThat(total, is(sameBeanAs(APPLE_PRICE * 2 + ORANGE_PRICE * 3)));
     }
 
 
-    private static Stream<Item> items(Character... skus) {
-        return stream(skus).map(Item::new);
+    private static Stream<Item> items(String... names) {
+        return stream(names).map(Item::new);
     }
 
 }

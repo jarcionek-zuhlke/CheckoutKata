@@ -2,14 +2,14 @@ package checkoutkata;
 
 public class Item {
 
-    private final char sku;
+    private final String name;
 
-    public Item(char sku) {
-        this.sku = sku;
+    public Item(String name) {
+        this.name = name;
     }
 
-    public char getSku() {
-        return sku;
+    public String getName() {
+        return name;
     }
 
     @Override
@@ -23,12 +23,12 @@ public class Item {
 
         Item that = (Item) object;
 
-        return this.sku == that.sku;
+        return this.name.equals(that.name);
     }
 
     @Override
     public int hashCode() {
-        return (int) sku;
+        return name.hashCode();
     }
 
 }

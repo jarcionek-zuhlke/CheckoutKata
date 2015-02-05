@@ -1,4 +1,4 @@
-A,50
-B,30
-C,20
-D,15
+Apple,60
+Orange,25
+Banana,30
+Pineapple,100

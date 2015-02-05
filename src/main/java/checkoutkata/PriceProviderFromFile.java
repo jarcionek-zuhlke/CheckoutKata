@@ -23,14 +23,14 @@ public class PriceProviderFromFile implements PriceProvider {
     @Override
     public int getPrice(Item item) {
         if (!prices.containsKey(item)) {
-            throw new IllegalArgumentException(String.format("No price defined for sku \"%s\"", item.getSku()));
+            throw new IllegalArgumentException(String.format("No price defined for \"%s\"", item.getName()));
         }
         return prices.get(item);
     }
 
 
     private static Item itemFrom(String line) {
-        return new Item(line.charAt(0));
+        return new Item(line.split(",")[0]);
     }
 
     private static int priceFrom(String line) {

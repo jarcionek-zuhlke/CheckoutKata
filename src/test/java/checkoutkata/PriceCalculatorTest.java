@@ -23,7 +23,7 @@ public class PriceCalculatorTest {
 
     @Test
     public void returnsPriceOfItemForSingleItem() {
-        Item item = new Item('A');
+        Item item = new Item("A");
         priceOf(item, is(42));
 
         int total = priceCalculator.calculateTotalPriceFor(stream(item), emptyMap());
@@ -33,8 +33,8 @@ public class PriceCalculatorTest {
 
     @Test
     public void returnsTotalPriceOfTwoDifferentItems() {
-        Item itemOne = new Item('B');
-        Item itemTwo = new Item('C');
+        Item itemOne = new Item("B");
+        Item itemTwo = new Item("C");
         priceOf(itemOne, is(13));
         priceOf(itemTwo, is(16));
 
@@ -45,7 +45,7 @@ public class PriceCalculatorTest {
 
     @Test
     public void returnsTotalPriceOfItemsInOfferWithTheNumberOfItemsEqualToItemsNeededToQualifyForOffer() {
-        Item item = new Item('C');
+        Item item = new Item("C");
         priceOf(item, is(12));
 
         Stream<Item> items = stream(item, item, item, item, item);
@@ -58,7 +58,7 @@ public class PriceCalculatorTest {
 
     @Test
     public void returnsTotalPriceOfItemsInOfferWithNumberOfItemsEqualToMultipleOfItemsNeededToQualifyForOffer() {
-        Item item = new Item('G');
+        Item item = new Item("G");
         priceOf(item, is(33));
 
         Stream<Item> items = stream(item, item, item, item, item, item);
@@ -71,7 +71,7 @@ public class PriceCalculatorTest {
 
     @Test
     public void returnsTotalPriceOfItemsInOfferWithOnlyFewItemsQualifyingForTheOffer() {
-        Item item = new Item('H');
+        Item item = new Item("H");
         priceOf(item, is(25));
 
         Stream<Item> items = stream(item, item, item, item, item);
